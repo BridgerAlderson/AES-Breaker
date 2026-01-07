@@ -28,7 +28,7 @@ pip install pyAesCrypt pycryptodome
 ```
 
 ## Usage
-<img width="1789" height="672" alt="image" src="https://github.com/user-attachments/assets/6be49b21-f2fa-4105-8e0c-8a093e444e51" />
+<img width="1808" height="669" alt="image" src="https://github.com/user-attachments/assets/94f4303d-33bd-48bd-9f35-ccac8bcaa093" />
 
 ### Text Decryption Mode
 
