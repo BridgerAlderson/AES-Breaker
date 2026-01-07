@@ -9,7 +9,7 @@ import string
 
 print(r"""
 ▂▃▅▇█▓▒ AesBreaker ▒▓█▇▅▃▂
-                        ~Bridger
+                    ~Bridger
 """)
 
 def safe_print(lock, *a, **k):
