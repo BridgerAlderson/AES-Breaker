@@ -502,7 +502,7 @@ Tuning:
 ```json
 {
   "tool": "aesbreaker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "command": "crack",
   "input": "backup.zip.aes",
   "format": "aescrypt",

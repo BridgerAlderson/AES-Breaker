@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aesbreaker"
-version = "2.0.0"
+version = "2.0.1"
 description = "AES decryption, password recovery, and cryptanalysis for AES Crypt v1/v2/v3, OpenSSL enc, WinZip AES, and explicit custom specs"
 readme = "README.md"
 requires-python = ">=3.9"

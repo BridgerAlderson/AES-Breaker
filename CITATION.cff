@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use AES-Breaker in research or tooling, cite this repository."
 title: "AES-Breaker"
-version: 2.0.0
+version: 2.0.1
 date-released: "2026-11-23"
 authors:
   - family-names: "Kacar"

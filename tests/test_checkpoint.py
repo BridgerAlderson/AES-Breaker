@@ -91,7 +91,7 @@ def test_invalid_checkpoint_documents(tmp_path: Path, mutate):
     path = tmp_path / "bad.json"
     document = {
         "tool": "aesbreaker",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "checkpoint_version": CHECKPOINT_VERSION,
         **_state(),
     }

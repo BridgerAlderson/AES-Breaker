@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.1 - 2026-11-23
+
+### Fixed
+
+- Windows and macOS CI portability:
+  - checkpoint file-mode assertions now respect Windows ACL semantics;
+  - attack timing uses `perf_counter` so very fast runs report a non-zero rate;
+  - auto-detection rejects ambiguous base64 `-nosalt` OpenSSL input instead of
+    treating the encoded text as raw ciphertext;
+  - the time-limit test tolerates coverage/import startup on slow runners.
+- Ubuntu Python 3.9 CI uses Ubuntu 22.04, where that interpreter is available.
+
 ## 2.0.0 - 2026-11-23
 
 Complete rewrite. The 1.x tool ("AES-Breaker" single script) is superseded.

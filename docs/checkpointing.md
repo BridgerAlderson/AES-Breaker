@@ -23,7 +23,7 @@ the checkpoint file is updated.
 ```json
 {
   "tool": "aesbreaker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "checkpoint_version": 1,
   "created": "2026-11-23T09:15:02+00:00",
   "updated": "2026-11-23T10:15:02+00:00",

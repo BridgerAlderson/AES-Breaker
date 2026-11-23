@@ -7,7 +7,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from aesbreaker import cli
+from aesbreaker import __version__, cli
 from aesbreaker.commands import common
 from aesbreaker.commands import selftest as selftest_command
 from aesbreaker.crypto import (
@@ -31,7 +31,7 @@ from .helpers import (
 def test_version():
     completed = run_cli("--version")
     assert completed.returncode == 0
-    assert b"aesbreaker 2.0.0" in completed.stdout
+    assert f"aesbreaker {__version__}".encode() in completed.stdout
 
 
 def test_crack_aescrypt_wordlist(tmp_path: Path):
