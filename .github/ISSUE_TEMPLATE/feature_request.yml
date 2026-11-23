@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a format, command, or attack improvement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What real workflow is blocked?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Include the exact format/KDF/oracle if this is a new container.
+    validations:
+      required: true
+  - type: checkboxes
+    id: correctness
+    attributes:
+      label: Correctness
+      options:
+        - label: I can provide a specification or independent fixture.
+        - label: The proposal has a real verification oracle (MAC/tag/prefix).

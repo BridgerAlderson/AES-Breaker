@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "cipher": "aes-256-cbc",
+  "input_encoding": "base64",
+  "ciphertext_offset": 32,
+  "kdf": {
+    "type": "pbkdf2",
+    "digest": "sha256",
+    "iterations": 200000,
+    "salt_offset": 0,
+    "salt_length": 16
+  },
+  "iv": {"source": "embedded", "offset": 16, "length": 16},
+  "padding": "pkcs7",
+  "oracle": {
+    "type": "known_prefix",
+    "hex": "7b2276657273696f6e223a"
+  }
+}

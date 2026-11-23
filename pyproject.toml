@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aesbreaker"
+version = "2.0.0"
+description = "AES decryption, password recovery, and cryptanalysis for AES Crypt v1/v2/v3, OpenSSL enc, WinZip AES, and explicit custom specs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Talha Kacar" }]
+keywords = ["aes", "decryption", "password-recovery", "cryptanalysis", "aescrypt", "openssl", "zip", "pbkdf2", "evp-bytestokey"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Security :: Cryptography",
+    "Topic :: System :: Systems Administration",
+]
+dependencies = ["pycryptodome>=3.18"]
+
+[project.optional-dependencies]
+argon2 = ["argon2-cffi>=23.1"]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.5",
+    "pyAesCrypt>=6.1",
+    "build>=1.2",
+    "twine>=5.1",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "argon2-cffi>=23.1",
+]
+
+[project.scripts]
+aesbreaker = "aesbreaker.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/BridgerAlderson/AES-Breaker"
+Repository = "https://github.com/BridgerAlderson/AES-Breaker"
+Documentation = "https://github.com/BridgerAlderson/AES-Breaker#readme"
+
+[tool.setuptools.packages.find]
+include = ["aesbreaker*"]
+
+[tool.setuptools.package-data]
+aesbreaker = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = [
+    "error::DeprecationWarning:aesbreaker.*",
+]
+
+[tool.coverage.run]
+source = ["aesbreaker"]
+branch = true
+# CLI modules are exercised through subprocess-based integration tests; their
+# code paths are covered there but cannot be measured in-process by coverage.py.
+omit = [
+    "aesbreaker/cli.py",
+    "aesbreaker/__main__.py",
+    "aesbreaker/commands/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 75
+
+[tool.mypy]
+# mypy 2.x dropped the Python 3.9 target; runtime tests still cover 3.9.
+python_version = "3.10"
+files = ["aesbreaker"]
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]

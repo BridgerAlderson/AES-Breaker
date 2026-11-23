@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use AES-Breaker in research or tooling, cite this repository."
+title: "AES-Breaker"
+version: 2.0.0
+date-released: "2026-11-23"
+authors:
+  - family-names: "Kacar"
+    given-names: "Talha"
+license: MIT
+repository-code: "https://github.com/BridgerAlderson/AES-Breaker"
+abstract: "Offline AES decryption, password recovery, and cryptanalysis for AES Crypt v1/v2/v3, OpenSSL enc, WinZip AES, and explicit custom specs."

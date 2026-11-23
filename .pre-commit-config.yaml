@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.4
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.4.1
+    hooks:
+      - id: mypy
+        args: [aesbreaker]
+        pass_filenames: false
+        additional_dependencies: ["pycryptodome>=3.18"]

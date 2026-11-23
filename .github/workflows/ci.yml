@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    timeout-minutes: 20
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: |
+          ruff check aesbreaker tests
+          ruff format --check aesbreaker tests
+      - name: Type check
+        run: mypy aesbreaker
+      - name: Tests with coverage
+        run: >-
+          pytest -q --cov=aesbreaker --cov-report=term-missing
+          --cov-fail-under=75
+      - name: Self-test
+        run: aesbreaker selftest
+
+  package:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build twine
+          python -m build
+          twine check dist/*
+      - name: Install the wheel in a clean venv
+        run: |
+          python -m venv .wheel-venv
+          . .wheel-venv/bin/activate
+          pip install dist/*.whl
+          aesbreaker --version
+          aesbreaker selftest --no-process
+          python -c "from importlib.resources import files; assert files('aesbreaker').joinpath('py.typed').is_file()"

@@ -1,0 +1,12 @@
+include README.md
+include README.tr.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include SECURITY.md
+include CITATION.cff
+recursive-include docs *.md *.json *.1
+recursive-include examples *.json
+recursive-include completions *
+recursive-include rules *.rule *.md
+recursive-include tests *.py

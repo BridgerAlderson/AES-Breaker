@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BridgerAlderson/AES-Breaker/docs/custom-spec.schema.json",
+  "title": "AES-Breaker custom AES spec",
+  "description": "Schema version 1 for `aesbreaker --format custom --spec`. The parser in aesbreaker/formats/custom.py is authoritative; this file aids editor validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cipher", "kdf"],
+  "properties": {
+    "version": {"const": 1, "default": 1},
+    "cipher": {
+      "type": "string",
+      "pattern": "^aes-(128|192|256)-(cbc|ecb|cfb1|cfb8|cfb|ofb|ctr|gcm)$"
+    },
+    "input_encoding": {"enum": ["raw", "hex", "base64"], "default": "base64"},
+    "ciphertext_offset": {"type": "integer", "minimum": 0, "default": 0},
+    "ciphertext_length": {"type": ["integer", "null"], "minimum": 0},
+    "ctr_little_endian": {"type": "boolean", "default": false},
+    "kdf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"enum": ["pbkdf2", "evp", "scrypt", "hkdf", "argon2"]},
+        "digest": {"enum": ["md5", "sha1", "sha224", "sha256", "sha384", "sha512"]},
+        "iterations": {"type": "integer", "minimum": 1},
+        "salt_hex": {"type": "string"},
+        "salt_offset": {"type": "integer", "minimum": 0},
+        "salt_length": {"type": "integer", "minimum": 1},
+        "password_encoding": {"enum": ["raw", "utf-8", "utf-16-le", "utf-16-be"]},
+        "n": {"type": "integer", "minimum": 2},
+        "r": {"type": "integer", "minimum": 1},
+        "p": {"type": "integer", "minimum": 1},
+        "info_hex": {"type": "string"},
+        "time_cost": {"type": "integer", "minimum": 1},
+        "memory_cost": {"type": "integer", "minimum": 8},
+        "parallelism": {"type": "integer", "minimum": 1}
+      }
+    },
+    "iv": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": {
+        "source": {"enum": ["explicit", "embedded", "zero", "derived"]},
+        "hex": {"type": "string"},
+        "offset": {"type": "integer", "minimum": 0},
+        "length": {"type": "integer", "minimum": 1}
+      }
+    },
+    "padding": {"enum": ["pkcs7", "none"]},
+    "oracle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"enum": ["known_prefix", "known_block", "gcm_tag"]},
+        "hex": {"type": "string"},
+        "offset": {"type": "integer", "minimum": 0},
+        "tag_hex": {"type": "string"},
+        "tag_offset": {"type": "integer", "minimum": 0},
+        "tag_length": {"type": "integer", "minimum": 8, "maximum": 16},
+        "aad_hex": {"type": "string"}
+      }
+    },
+    "allow_heuristic": {"type": "boolean", "default": false}
+  }
+}

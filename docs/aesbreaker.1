@@ -1,0 +1,79 @@
+.TH AESBREAKER 1 "2026-11-23" "AES-Breaker 2.0.0" "User Commands"
+.SH NAME
+aesbreaker \- offline AES decryption and password recovery
+.SH SYNOPSIS
+.B aesbreaker
+.I command
+.RI [ options ]
+.SH DESCRIPTION
+AES-Breaker recovers passwords for AES Crypt v1/v2/v3, OpenSSL enc, WinZip AES,
+and explicit JSON-spec custom AES files. Results are labelled confirmed,
+probable, or weak according to the format's actual verification mechanism.
+.SH COMMANDS
+.TP
+.B crack
+Recover a password with wordlists, rules, masks, hybrids, or a combinator.
+.TP
+.B decrypt
+Decrypt with a known password or an explicit raw AES specification.
+.TP
+.B inspect
+Describe a container without decrypting it.
+.TP
+.B analyze
+Entropy, duplicate-block, magic, and container checks for unknown data.
+.TP
+.B derive
+Reproduce EVP_BytesToKey, PBKDF2, or HKDF.
+.TP
+.B cribdrag
+Test a known plaintext crib against two CTR/OFB ciphertexts.
+.TP
+.B recover-iv
+Recover a CBC IV or a stream keystream from known plaintext.
+.TP
+.B infer
+Rank raw AES mode/IV interpretations with explicit confidence.
+.TP
+.B encrypt
+Create AES Crypt v2/v3, OpenSSL enc, or WinZip AES containers.
+.TP
+.B selftest
+Run known-answer and interoperability checks.
+.SH OPTIONS
+Run
+.B aesbreaker command --help
+for the complete option list. Common long-running options include
+.BR --max-runtime ,
+.BR --checkpoint ,
+and
+.BR --resume .
+.SH EXIT STATUS
+.TP
+.B 0
+Success or password found.
+.TP
+.B 1
+Password not found, no inference candidates, or selftest failure.
+.TP
+.B 2
+Usage, input, format, or output error.
+.TP
+.B 3
+Verification/decryption failure or partial extraction.
+.TP
+.B 124
+--max-runtime limit reached.
+.TP
+.B 130
+Interrupted by Ctrl-C.
+.SH FILES
+.I docs/formats.md
+contains exact wire-format descriptions.
+.I docs/custom-spec.schema.json
+describes the custom spec format.
+.SH SEE ALSO
+.BR openssl (1),
+.BR 7z (1)
+.SH AUTHOR
+Talha Kacar.
