@@ -126,6 +126,12 @@ def _load_layout(path: str | Path, options) -> OpenSSLLayout:
                     # the caller explicitly says so; auto would silently
                     # reinterpret a raw ASCII-looking ciphertext.
                     decoded = candidate
+                elif options.nosalt and encoding == "auto":
+                    raise FormatError(
+                        "input looks like base64, but auto cannot tell a "
+                        "headerless --openssl-nosalt file from raw ciphertext",
+                        hint="pass --in-encoding base64 if it is base64, or --in-encoding raw to force raw",
+                    )
         if decoded is not None:
             payload = decoded
             source_encoding = "base64"

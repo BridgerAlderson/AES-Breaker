@@ -347,7 +347,7 @@ def _run_benchmark(args, artifact, verifier, plan, payload: dict) -> int:
     if args.benchmark is None:
         raise AssertionError("benchmark requested without a count")
     count = args.benchmark
-    start = time.monotonic()
+    start = time.perf_counter()
     tested = 0
     candidates = plan.iter_candidates()
     try:
@@ -357,7 +357,7 @@ def _run_benchmark(args, artifact, verifier, plan, payload: dict) -> int:
             tested += 1
     except StopIteration:
         pass
-    elapsed = time.monotonic() - start
+    elapsed = time.perf_counter() - start
     if tested == 0:
         raise UsageError("the attack plan produced no candidates to benchmark")
     rate = tested / elapsed if elapsed > 0 else 0.0

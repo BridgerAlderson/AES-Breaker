@@ -66,8 +66,8 @@ Notes:
 - `--password-file` reads the first line and removes its line ending. Protect
   the file with mode 0600.
 - `--json` and `--json-out` include the recovered password. `--json-out` files
-  are created atomically with mode 0600, but stdout/terminal logs may be
-  captured elsewhere.
+  are created atomically with mode 0600 on POSIX (Windows inherits directory
+  ACLs), but stdout/terminal logs may be captured elsewhere.
 - Passwords and derived keys necessarily exist in process memory while the
   command runs; Python cannot guarantee secure erasure of every copy.
 - For non-UTF-8 passwords use `--password-hex` or a binary `--password-file`.

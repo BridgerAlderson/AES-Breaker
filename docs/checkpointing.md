@@ -44,7 +44,8 @@ the checkpoint file is updated.
 }
 ```
 
-The file never contains a password. It is written atomically with mode 0600.
+The file never contains a password. It is written atomically; on POSIX the
+mode is 0600, while Windows inherits the destination directory ACL.
 
 ## Resume rules
 

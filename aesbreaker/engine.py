@@ -99,7 +99,7 @@ class StatusPrinter:
     ) -> None:
         if not self.enabled:
             return
-        now = time.monotonic()
+        now = time.perf_counter()
         if not force and now - self._last < self.interval:
             return
         self._last = now
@@ -225,7 +225,7 @@ def _run_serial(
     config: AttackConfig,
     printer: StatusPrinter,
 ) -> AttackResult:
-    start = time.monotonic()
+    start = time.perf_counter()
     deadline = start + config.max_runtime if config.max_runtime is not None else None
     attempts = 0
     weak = 0
@@ -237,7 +237,7 @@ def _run_serial(
     outcome = Outcome.REJECT
     try:
         for candidate in plan.iter_candidates():
-            if deadline is not None and time.monotonic() >= deadline:
+            if deadline is not None and time.perf_counter() >= deadline:
                 time_limit_reached = True
                 break
             attempts += 1
@@ -248,14 +248,14 @@ def _run_serial(
                 found = candidate
                 outcome = result
                 break
-            printer.maybe_update(attempts, time.monotonic() - start, weak)
+            printer.maybe_update(attempts, time.perf_counter() - start, weak)
         else:
             exhausted = True
     except KeyboardInterrupt:
         interrupted = True
     except Exception as exc:  # noqa: BLE001 - mirror worker error reporting
         errors.append(f"{type(exc).__name__}: {exc}")
-    elapsed = time.monotonic() - start
+    elapsed = time.perf_counter() - start
     printer.maybe_update(attempts, elapsed, weak, force=True)
     return AttackResult(
         found=found,
@@ -303,7 +303,7 @@ def _run_parallel(
     interrupted = False
     time_limit_reached = False
     feeder_exhausted = False
-    start = time.monotonic()
+    start = time.perf_counter()
     run_deadline = start + config.max_runtime if config.max_runtime is not None else None
 
     workers = [
@@ -329,7 +329,7 @@ def _run_parallel(
         batch: list[bytes] = []
         try:
             for candidate in plan.iter_candidates():
-                if run_deadline is not None and time.monotonic() >= run_deadline:
+                if run_deadline is not None and time.perf_counter() >= run_deadline:
                     time_limit_reached = True
                     stop_flag.value = 1
                     return
@@ -391,7 +391,7 @@ def _run_parallel(
         while True:
             if (
                 run_deadline is not None
-                and time.monotonic() >= run_deadline
+                and time.perf_counter() >= run_deadline
                 and not stop_flag.value
             ):
                 time_limit_reached = True
@@ -409,7 +409,7 @@ def _run_parallel(
 
             attempts_now = attempts_counter.value
             weak_now = weak_counter.value
-            printer.maybe_update(attempts_now, time.monotonic() - start, weak_now)
+            printer.maybe_update(attempts_now, time.perf_counter() - start, weak_now)
             if not any(process.is_alive() for process in workers):
                 break
             if stop_flag.value and feed_done.is_set():
@@ -417,8 +417,8 @@ def _run_parallel(
                 # worker failure a short grace period is enough; during a
                 # normal run an expensive KDF may need longer.
                 grace = 2.0 if (hits or errors) else 10.0
-                deadline = time.monotonic() + grace
-                while time.monotonic() < deadline and any(
+                deadline = time.perf_counter() + grace
+                while time.perf_counter() < deadline and any(
                     process.is_alive() for process in workers
                 ):
                     drain_messages()
@@ -428,9 +428,9 @@ def _run_parallel(
         interrupted = True
 
     stop_flag.value = 1
-    deadline = time.monotonic() + (2.0 if interrupted else 10.0)
+    deadline = time.perf_counter() + (2.0 if interrupted else 10.0)
     for process in workers:
-        remaining = max(0.0, deadline - time.monotonic())
+        remaining = max(0.0, deadline - time.perf_counter())
         process.join(timeout=remaining)
     for process in workers:
         if process.is_alive():
@@ -458,7 +458,7 @@ def _run_parallel(
 
     attempts = int(attempts_counter.value)
     weak = int(weak_counter.value)
-    elapsed = time.monotonic() - start
+    elapsed = time.perf_counter() - start
     printer.maybe_update(attempts, elapsed, weak, force=True)
     printer.finish()
 

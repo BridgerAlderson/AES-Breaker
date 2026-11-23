@@ -323,7 +323,9 @@ def test_nopad_openssl_interoperability(tmp_path: Path):
 def test_nosalt_base64_requires_explicit_encoding(tmp_path: Path):
     raw = make_openssl(tmp_path / "nosalt.bin", cipher="aes-256-cbc", digest="md5", salted=False)
     encoded = tmp_path / "nosalt.b64"
-    encoded.write_text(base64.encodebytes(raw.read_bytes()).decode("ascii"))
+    # Force CRLF so the auto-detection path is tested identically on Windows
+    # and Unix; otherwise Windows may accidentally exercise a different branch.
+    encoded.write_bytes(base64.encodebytes(raw.read_bytes()).replace(b"\n", b"\r\n"))
     options = FormatOptions(cipher="aes-256-cbc", digest="md5", nosalt=True, in_encoding="base64")
     artifact = OpenSSLArtifact(encoded, options)
     output = io.BytesIO()

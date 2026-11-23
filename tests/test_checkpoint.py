@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -49,8 +50,11 @@ def test_write_and_load_roundtrip(tmp_path: Path):
     assert document["checkpoint_version"] == CHECKPOINT_VERSION
     assert document["attempts"] == 42
     assert document["completed"] is False
-    mode = path.stat().st_mode & 0o777
-    assert mode == 0o600
+    if os.name != "nt":
+        # Windows reports the POSIX-like 0o666 view; it does not expose
+        # chmod ownership bits. The file is still created through mkstemp.
+        mode = path.stat().st_mode & 0o777
+        assert mode == 0o600
 
 
 def test_signature_is_stable_and_sensitive():
